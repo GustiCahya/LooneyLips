@@ -43,10 +43,12 @@ func _on_TextureButton_pressed():
 	
 func add_to_player_words():
 	var new_text = PlayerText.text
-	player_words.append(new_text)
-	DisplayText.text = ""
-	PlayerText.clear()
-	refresh_scene()
+	if new_text:
+		player_words.append(new_text)
+		PlayerText.clear()
+		refresh_scene()
+	else:
+		refresh_scene()
 	
 func is_story_done():
 	return player_words.size() == current_story.prompts.size()
@@ -58,6 +60,7 @@ func refresh_scene():
 		show_question()
 
 func show_question():
+	DisplayText.text = ""
 	DisplayText.text += "May I have " + current_story.prompts[player_words.size()] + " please?"
 	PlayerText.show()
 	SubmitLabel.text = "Ok"
