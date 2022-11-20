@@ -1,0 +1,22 @@
+[
+	{
+		"story": "Once upon a time someone called %s ate a %s flavoured sandwich which made him feel all %s inside. It was a %s day",
+		"prompts": ["a name", "a noun", "adverb", "adjective"]
+	},	
+	{
+		"story": "I got %s in my pocket with my %s",
+		"prompts": ["a noun", "the person pronoun"]
+	},
+	{
+		"story": "Tell my %s ain't nothing but the %s",
+		"prompts": ["a name", "adjective"]
+	},	
+	{
+		"story": "You look so %s. I want to %s",
+		"prompts": ["adjective", "verb"]
+	},
+	{
+		"story": "%s! do you know that it is not %s to %s",
+		"prompts": ["a name", "adjective", "verb"]
+	}
+]

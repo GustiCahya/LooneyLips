@@ -1,29 +1,8 @@
 extends Control
 
+var first_play : bool = true
 var player_words = []
-var template = [
-	{
-		"story": "Once upon a time someone called %s ate a %s flavoured sandwich which made him feel all %s inside. It was a %s day",
-		"prompts": ["a name", "a noun", "adverb", "adjective"]
-	},	
-	{
-		"story": "I got %s in my pocket with my %s",
-		"prompts": ["a noun", "the person pronoun"]
-	},
-	{
-		"story": "Tell my %s ain't nothing but the %s",
-		"prompts": ["a name", "adjective"]
-	},	
-	{
-		"story": "You look so %s. I want to %s",
-		"prompts": ["adjective", "verb"]
-	},
-	{
-		"story": "%s! do you know that it is not %s to %s",
-		"prompts": ["a name", "adjective", "verb"]
-	}
-]
-var current_story
+var current_story : Dictionary
 
 onready var DisplayText = $VBoxContainer/DisplayText
 onready var PlayerText = $VBoxContainer/HBoxContainer/PlayerText
@@ -31,7 +10,6 @@ onready var SubmitLabel = $VBoxContainer/HBoxContainer/Label
 
 func _ready():
 	reset_game()
-	DisplayText.text = "Welcome to Loony Lips! We're going to tell a story and have a wonderful time! "
 	refresh_scene()
 	PlayerText.grab_focus()
 
@@ -60,7 +38,11 @@ func refresh_scene():
 		show_question()
 
 func show_question():
-	DisplayText.text = ""
+	if (first_play):
+		DisplayText.text = "Welcome to Loony Lips! We're going to tell a story and have a wonderful time! "
+		first_play = false
+	else :
+		DisplayText.text = ""
 	DisplayText.text += "May I have " + current_story.prompts[player_words.size()] + " please?"
 	PlayerText.show()
 	SubmitLabel.text = "Ok"
@@ -73,8 +55,24 @@ func show_result():
 
 func reset_game():
 	randomize()
-	current_story = template[randi() % template.size()]
+#	JSON Method
+	var stories = read_json_file("StoryBook.json")
+	current_story = stories[randi() % stories.size()]
 	player_words.clear()
+#	Node Method
+#	var count_stories = $StoryBook.get_child_count()
+#	var index_story = randi() % count_stories
+#	current_story.prompts = $StoryBook.get_child(index_story).prompts
+#	current_story.story = $StoryBook.get_child(index_story).story
+#	player_words.clear()
+
+func read_json_file(filename):
+	var file = File.new()
+	file.open(filename, file.READ)
+	var text = file.get_as_text()
+	var json_data = parse_json(text)
+	file.close()
+	return json_data
 
 
 	
